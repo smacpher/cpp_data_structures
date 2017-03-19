@@ -2,18 +2,19 @@
 #define STACK_H
 
 #include <iostream>
+#include <sstream>
 #include <string>
 
 using namespace std;
 
 /* Forward declaration(s). */
 template <class T>
-class Stack;
+class Stack<T>;
 
 /* StackNode prototype. */
-template <class T>;
-class StackNode<T> {
-    friend Stack;
+template <class T>
+class StackNode {
+    friend Stack<T>;
 
     public:
         // Static symbolic constants.
@@ -38,9 +39,9 @@ class StackNode<T> {
 
 /* Stack prototype. */
 template <class T>
-class Stack<T> {
+class Stack {
     protected:
-        StackNode *top;
+        StackNode<T> *top;
         int size;
 
     public:
@@ -49,7 +50,7 @@ class Stack<T> {
         virtual ~Stack();
 
         // Public instance methods.
-        bool push(StackNode *node);
+        bool push(StackNode<T> *node);
         bool push(T data);
 
         StackNode* pop();
@@ -76,7 +77,7 @@ StackNode<T>::~StackNode() {
 
 // Misc. other public instance methods.
 template <class T>
-StackNode<T>::toString() const {
+string StackNode<T>::toString() const {
     ostringstream os;
     os << StackNode::STACK_NODE_LABEL << " [ " << this->data << " ] ";
     return os.str();
@@ -89,6 +90,13 @@ ostream& operator<<(ostream &os, const StackNode &node) {
 }
 
 /* Stack definition. */
+
+/* Typedef forward declaration(s). */
+typedef StackNode<int> IntStackNode;
+typedef StackNode<float> FloatStackNode;
+typedef StackNode<double> DoubleStackNode;
+typedef StackNode<char> CharStackNode;
+typedef StackNode<string> StringStackNode;
 
 #endif /* STACK_H */
 
