@@ -9,12 +9,13 @@ using namespace std;
 
 /* Forward declaration(s). */
 template <class T>
-class Stack<T>;
+class Stack;
 
 /* StackNode prototype. */
 template <class T>
 class StackNode {
-    friend Stack<T>;
+    template <class W>
+    friend class Stack;
 
     public:
         // Static symbolic constants.
@@ -34,7 +35,7 @@ class StackNode {
         string toString() const;
 
     // Overloaded non-member friend operator(s).
-    friend ostream& operator<<(ostream &os, const StackNode &node);
+    friend ostream& operator<<(ostream &os, const StackNode<T> &node);
 };
 
 /* Stack prototype. */
@@ -53,7 +54,7 @@ class Stack {
         bool push(StackNode<T> *node);
         bool push(T data);
 
-        StackNode* pop();
+        StackNode<T>* pop();
         int isEmpty() const;
 };
 
@@ -84,12 +85,14 @@ string StackNode<T>::toString() const {
 }
 
 // Overloaded non-member friend operator(s).
-ostream& operator<<(ostream &os, const StackNode &node) {
+template <class T>
+ostream& operator<<(ostream &os, const StackNode<T> &node) {
     os << node.toString();
     return os;
 }
 
 /* Stack definition. */
+
 
 /* Typedef forward declaration(s). */
 typedef StackNode<int> IntStackNode;

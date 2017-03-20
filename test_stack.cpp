@@ -14,8 +14,8 @@ int main() {
 
 // Test method definitions.
 void testStackNode() {
-    StackNode* stack_node;
+    IntStackNode* stack_node;
 
-    stack_node = StackNode();
+    stack_node = new IntStackNode();
 }
 
