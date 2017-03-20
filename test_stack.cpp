@@ -17,5 +17,7 @@ void testStackNode() {
     IntStackNode* stack_node;
 
     stack_node = new IntStackNode();
+
+    delete stack_node;
 }
 

@@ -29,6 +29,8 @@ class StackNode {
         // Constructor(s) / destructor.
         StackNode();
         StackNode(T data);
+        StackNode(const StackNode<T> &node);
+
         virtual ~StackNode();
  
         // Public instance methods.
@@ -41,6 +43,11 @@ class StackNode {
 /* Stack prototype. */
 template <class T>
 class Stack {
+    public:
+        // Static symbolic constants.
+        static const string STACK_LABEL;
+        static const string END_STACK_LABEL;
+
     protected:
         StackNode<T> *top;
         int size;
@@ -53,9 +60,9 @@ class Stack {
         // Public instance methods.
         bool push(StackNode<T> *node);
         bool push(T data);
-
         StackNode<T>* pop();
-        int isEmpty() const;
+        bool isEmpty() const;
+        string toString() const;
 };
 
 /* StackNode definition. */
@@ -73,6 +80,12 @@ StackNode<T>::StackNode(T data) {
 }
 
 template <class T>
+StackNode<T>::StackNode(const StackNode<T> &node) {
+    this->next = NULL;
+    this->data = node.data;
+}
+
+template <class T>
 StackNode<T>::~StackNode() {
 }
 
@@ -80,7 +93,7 @@ StackNode<T>::~StackNode() {
 template <class T>
 string StackNode<T>::toString() const {
     ostringstream os;
-    os << StackNode::STACK_NODE_LABEL << " [ " << this->data << " ] ";
+    os << StackNode<T>::STACK_NODE_LABEL << " [ " << this->data << " ] ";
     return os.str();
 }
 
@@ -92,7 +105,78 @@ ostream& operator<<(ostream &os, const StackNode<T> &node) {
 }
 
 /* Stack definition. */
+// Constructor(s) / destructor.
+template <class T>
+Stack<T>::Stack() {
+    this->size = 0;
+    this->top = NULL;
+}
 
+template <class T>
+Stack<T>::~Stack() {
+}
+
+template <class T>
+bool Stack<T>::push(StackNode<T>* node) {
+    node->next = this->top;
+    this->top = node;
+
+    return true;
+}
+
+template <class T>
+bool Stack<T>::push(T data) {
+    StackNode<T>* node_p;
+
+    // Instantiate StackNode<T>.
+    node_p = new StackNode<T>();
+
+    // Assign data and next.
+    node_p->data = data;
+    node_p->next = this->top;
+
+    // Update top.
+    this->top = node_p;
+
+    size++;
+
+    return true;
+}
+
+template <class T>
+StackNode<T>* Stack<T>::pop() {
+    this->size--;
+ 
+    StackNode<T>* popped = this->top;
+    this->top = this->top->next;
+
+    return popped;
+}
+
+template <class T>
+bool Stack<T>::isEmpty() const {
+    return this->size == 0;
+}
+
+template <class T>
+string Stack<T>::toString() const {
+    StackNode<T>* stack_node_p;
+
+    cout << Stack<T>::STACK_LABEL << endl;
+
+    for (stack_node_p = this->top; stack_node_p != NULL; stack_node_p->next) {
+        cout << stack_node_p->toString() << endl;
+    }
+
+    cout << Stack<T>::END_STACK_LABEL << endl;
+}
+
+template <class T>
+const string StackNode<T>::STACK_NODE_LABEL = "[ StackNode ]";
+template <class T>
+const string Stack<T>::STACK_LABEL = " Stack ";
+template <class T>
+const string Stack<T>::END_STACK_LABEL = " End Stack ";
 
 /* Typedef forward declaration(s). */
 typedef StackNode<int> IntStackNode;
