@@ -37,7 +37,10 @@ class StackNode {
         string toString() const;
 
     // Overloaded non-member friend operator(s).
-    friend ostream& operator<<(ostream &os, const StackNode<T> &node);
+    friend ostream& operator<<(ostream &os, const StackNode<T> &node) {
+        os << node.toString();
+        return os;
+    }
 };
 
 /* Stack prototype. */
@@ -63,6 +66,7 @@ class Stack {
         StackNode<T>* pop();
         bool isEmpty() const;
         string toString() const;
+        bool garbageCollect();
 };
 
 /* StackNode definition. */
@@ -95,13 +99,6 @@ string StackNode<T>::toString() const {
     ostringstream os;
     os << StackNode<T>::STACK_NODE_LABEL << " [ " << this->data << " ] ";
     return os.str();
-}
-
-// Overloaded non-member friend operator(s).
-template <class T>
-ostream& operator<<(ostream &os, const StackNode<T> &node) {
-    os << node.toString();
-    return os;
 }
 
 /* Stack definition. */
@@ -164,7 +161,7 @@ string Stack<T>::toString() const {
 
     cout << Stack<T>::STACK_LABEL << endl;
 
-    for (stack_node_p = this->top; stack_node_p != NULL; stack_node_p->next) {
+    for (stack_node_p = this->top; stack_node_p != NULL; stack_node_p = stack_node_p->next) {
         cout << stack_node_p->toString() << endl;
     }
 
@@ -172,11 +169,25 @@ string Stack<T>::toString() const {
 }
 
 template <class T>
+bool Stack<T>::garbageCollect() {
+    StackNode<T>* stack_node_p;
+
+    for (stack_node_p = this->top; stack_node_p != NULL; stack_node_p = stack_node_p->next) {
+        delete stack_node_p;
+    }
+
+    return true;
+}
+
+// Out-of-line definitions.
+template <class T>
 const string StackNode<T>::STACK_NODE_LABEL = "[ StackNode ]";
+
 template <class T>
-const string Stack<T>::STACK_LABEL = " Stack ";
+const string Stack<T>::STACK_LABEL = "[[ Stack ]]";
+
 template <class T>
-const string Stack<T>::END_STACK_LABEL = " End Stack ";
+const string Stack<T>::END_STACK_LABEL = "[[ End Stack ]]";
 
 /* Typedef forward declaration(s). */
 typedef StackNode<int> IntStackNode;
@@ -184,6 +195,12 @@ typedef StackNode<float> FloatStackNode;
 typedef StackNode<double> DoubleStackNode;
 typedef StackNode<char> CharStackNode;
 typedef StackNode<string> StringStackNode;
+
+typedef Stack<int> IntStack;
+typedef Stack<float> FloatStack;
+typedef Stack<double> DoubleStack;
+typedef Stack<char> CharStack;
+typedef Stack<string> StringStack;
 
 #endif /* STACK_H */
 
