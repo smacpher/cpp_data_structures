@@ -132,3 +132,22 @@ string DLNode<T>::to_string() const {
     os << DLNode<T>::LABEL << " [ " << this->data << " ] ";
     return os.str();
 }
+
+/* Out-of-line declarations. */
+template <class T>
+const string LNode<T>::LABEL = "[ LNode (Linked Node) ]";
+template <class T>
+const string DLNode<T>::LABEL = "[ DLNode (Doubly-linked Node) ]";
+
+/* Typdef forward declarations. */
+typedef LNode<int> IntLNode;
+typedef LNode<float> FloatLNode;
+typedef LNode<double> DoubleLNode;
+typedef LNode<char> CharLNode;
+typedef LNode<string> StringLNode;
+
+typedef DLNode<int> IntDLNode;
+typedef DLNode<float> FloatDLNode;
+typedef DLNode<double> DoubleDLNode;
+typedef DLNode<char> CharDLNode;
+typedef DLNode<string> StringDLNode;

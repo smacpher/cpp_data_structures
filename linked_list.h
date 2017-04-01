@@ -3,6 +3,7 @@
 
 #include <sstream>
 #include <string>
+
 #include "base.h"
 
 /* LinkedList class prototype. */
@@ -92,8 +93,9 @@ LinkedList<T>::~LinkedList() {
         return;
 
     node_p = this->head;
-    while ((node_p = node_p->next) != NULL)
+    while ((node_p = node_p->next) != NULL) {
         delete node_p;
+    }
 
     this->head = NULL;
 }
@@ -103,8 +105,13 @@ bool LinkedList<T>::push_front(LNode<T> *new_node_p) {
     if (new_node_p == NULL)
         return false;
 
-    new_node_p->next = this->head;
-    this->head = new_node_p;
+    // Empty list; new_node_p will be the first element.
+    if (this->head == NULL) {
+        this->head = new_node_p;
+    } else {
+        new_node_p->next = this->head;
+        this->head = new_node_p;
+    }
     return true;
 }
 
@@ -112,10 +119,16 @@ template <class T>
 bool LinkedList<T>::push_front(T data) {
     LNode<T> *new_node_p;
 
+    // Dynamically allocate LNode using param data.
     new_node_p = new LNode<T>(data);
 
-    new_node_p->next = this->head;
-    this->head = new_node_p;
+    // Empty list; new_node_p will be the first element.
+    if (this->head == NULL) {
+        this->head = new_node_p;
+    } else {
+        new_node_p->next = this->head;
+        this->head = new_node_p;
+    }
     return true;
 }
 
@@ -123,15 +136,22 @@ template <class T>
 bool LinkedList<T>::push_back(LNode<T> *new_node_p) {
     LNode<T> *prev_node_p;
 
-    prev_node_p = this->head;
-    if (new_node_p == NULL || prev_node_p == NULL)
+    // Protect against NULL passed in nodes.
+    if (new_node_p == NULL)
         return false;
 
-    // Increment pointer to the last index of the list.
-    while ((prev_node_p = prev_node_p->next) != NULL);
 
-    prev_node_p->next = new_node_p;
-    new_node_p->next = NULL;
+    // Empty list; new_node_p will be the first element.
+    if (this->head == NULL) {
+        this->head = new_node_p;
+    } else {
+        // Increment pointer to the last index of the list.
+        new_node_p = this->head;
+        while ((prev_node_p = prev_node_p->next) != NULL);
+
+        prev_node_p->next = new_node_p;
+        new_node_p->next = NULL;
+    }
 
     return true;
 }
@@ -154,6 +174,20 @@ bool LinkedList<T>::push_back(T data) {
     new_node_p->next = NULL;
 
     return true;
+}
+
+template <class T>
+LNode<T>* LinkedList<T>::front() {
+    return this->head;
+}
+
+template <class T>
+LNode<T>* LinkedList<T>::back() {
+    LNode<T> *node_p;
+
+    node_p = this->head;
+    while((node_p = node_p->next) != NULL);
+    return node_p;
 }
 
 template <class T>

@@ -132,27 +132,11 @@ bool Stack<T>::garbage_collect() {
 
 // Out-of-line definitions.
 template <class T>
-const string LNode<T>::LABEL = "[ LNode (Linked Node) ]";
-template <class T>
-const string DLNode<T>::LABEL = "[ DLNode (Doubly-linked Node) ]";
-template <class T>
 const string Stack<T>::TOP_LABEL = "[[ Top of Stack ]]";
 template <class T>
 const string Stack<T>::END_LABEL = "[[ Bottom of Stack ]]";
 
-/* Typedef forward declaration(s). */
-typedef LNode<int> IntLNode;
-typedef LNode<float> FloatLNode;
-typedef LNode<double> DoubleLNode;
-typedef LNode<char> CharLNode;
-typedef LNode<string> StringLNode;
-
-typedef DLNode<int> IntDLNode;
-typedef DLNode<float> FloatDLNode;
-typedef DLNode<double> DoubleDLNode;
-typedef DLNode<char> CharDLNode;
-typedef DLNode<string> StringDLNode;
-
+/* Typedef forward declarations. */
 typedef Stack<int> IntStack;
 typedef Stack<float> FloatStack;
 typedef Stack<double> DoubleStack;

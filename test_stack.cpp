@@ -1,4 +1,5 @@
 #include <string>
+
 #include "stack.h"
 
 using namespace std;
@@ -12,13 +13,11 @@ void testLNode();
 void testDLNode();
 void testStack();
 
-
 // Main client.
 int main() {
     testLNode();
     testDLNode();
     testStack();
-
     return 0;
 }
 
@@ -29,7 +28,7 @@ void testLNode() {
     IntLNode* l_node;
     l_node = new IntLNode(21);
 
-    cout << l_node << endl;
+    cout << *l_node << endl;
 
     delete l_node;
 }
@@ -41,7 +40,7 @@ void testDLNode() {
     IntDLNode* dl_node;
     dl_node = new IntDLNode(21);
 
-    cout << dl_node << endl;
+    cout << *dl_node << endl;
 
     delete dl_node;
 }
