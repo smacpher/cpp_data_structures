@@ -5,43 +5,9 @@
 #include <sstream>
 #include <string>
 
+#include "base.h"
+
 using namespace std;
-
-/* Forward declaration(s). */
-template <class T>
-class Stack;
-
-/* StackNode prototype. */
-template <class T>
-class StackNode {
-    template <class W>
-    friend class Stack;
-
-    public:
-        // Static symbolic constants.
-        static const string LABEL;
-
-    protected:
-        StackNode<T> *next;
-        T data;
-
-    public:
-        // Constructor(s) / destructor.
-        StackNode();
-        StackNode(T data);
-        StackNode(const StackNode<T> &node);
-
-        virtual ~StackNode();
- 
-        // Public instance methods.
-        string toString() const;
-
-    // Overloaded non-member friend operator(s).
-    friend ostream& operator<<(ostream &os, const StackNode<T> &node) {
-        os << node.toString();
-        return os;
-    }
-};
 
 /* Stack prototype. */
 template <class T>
@@ -52,7 +18,8 @@ class Stack {
         static const string END_LABEL;
 
     protected:
-        StackNode<T> *top;
+        // Protected members.
+        LNode<T> *top;
 
     public:
         // Constructor(s) / destructor.
@@ -60,45 +27,13 @@ class Stack {
         virtual ~Stack();
 
         // Public instance methods.
-        bool push(StackNode<T> *node);
+        bool push(LNode<T> *node);
         bool push(T data);
-        StackNode<T>* pop();
-        bool isEmpty() const;
-        string toString() const;
-        bool garbageCollect();
+        LNode<T>* pop();
+        bool is_empty() const;
+        string to_string() const;
+        bool garbage_collect();
 };
-
-/* StackNode definition. */
-// Constructor / destructor.
-template <class T>
-StackNode<T>::StackNode() {
-    this->next = NULL;
-    this->data = T();
-}
-
-template <class T>
-StackNode<T>::StackNode(T data) {
-    this->next = NULL;
-    this->data = data;
-}
-
-template <class T>
-StackNode<T>::StackNode(const StackNode<T> &node) {
-    this->next = NULL;
-    this->data = node.data;
-}
-
-template <class T>
-StackNode<T>::~StackNode() {
-}
-
-// Misc. other public instance methods.
-template <class T>
-string StackNode<T>::toString() const {
-    ostringstream os;
-    os << StackNode<T>::LABEL << " [ " << this->data << " ] ";
-    return os.str();
-}
 
 /* Stack definition. */
 // Constructor(s) / destructor.
@@ -112,7 +47,10 @@ Stack<T>::~Stack() {
 }
 
 template <class T>
-bool Stack<T>::push(StackNode<T>* node) {
+bool Stack<T>::push(LNode<T>* node) {
+    if (node == NULL)
+        return false;
+
     node->next = this->top;
     this->top = node;
 
@@ -121,10 +59,10 @@ bool Stack<T>::push(StackNode<T>* node) {
 
 template <class T>
 bool Stack<T>::push(T data) {
-    StackNode<T>* node_p;
+    LNode<T>* node_p;
 
-    // Instantiate StackNode<T>.
-    node_p = new StackNode<T>();
+    // Instantiate LNode<T>.
+    node_p = new LNode<T>();
 
     // Assign data and next.
     node_p->data = data;
@@ -137,8 +75,8 @@ bool Stack<T>::push(T data) {
 }
 
 template <class T>
-StackNode<T>* Stack<T>::pop() {
-    StackNode<T>* popped;
+LNode<T>* Stack<T>::pop() {
+    LNode<T>* popped;
 
     popped = this->top;
     this->top = this->top->next;
@@ -147,14 +85,14 @@ StackNode<T>* Stack<T>::pop() {
 }
 
 template <class T>
-bool Stack<T>::isEmpty() const {
+bool Stack<T>::is_empty() const {
     return this->top == NULL;
 }
 
 template <class T>
-string Stack<T>::toString() const {
+string Stack<T>::to_string() const {
     ostringstream os;
-    StackNode<T>* stack_node_p;
+    LNode<T>* stack_node_p;
 
     os << Stack<T>::TOP_LABEL << endl;
 
@@ -163,7 +101,7 @@ string Stack<T>::toString() const {
              stack_node_p != NULL;
              stack_node_p = stack_node_p->next) {
 
-            os << stack_node_p->toString() << endl;
+            os << stack_node_p->to_string() << endl;
         }
     }
 
@@ -172,8 +110,8 @@ string Stack<T>::toString() const {
 }
 
 template <class T>
-bool Stack<T>::garbageCollect() {
-    StackNode<T>* stack_node_p;
+bool Stack<T>::garbage_collect() {
+    LNode<T>* stack_node_p;
 
     for (stack_node_p = this->top;
          stack_node_p != NULL;
@@ -188,20 +126,26 @@ bool Stack<T>::garbageCollect() {
 
 // Out-of-line definitions.
 template <class T>
-const string StackNode<T>::LABEL = "[ StackNode ]";
-
+const string LNode<T>::LABEL = "[ LNode (Linked Node) ]";
+template <class T>
+const string DLNode<T>::LABEL = "[ DLNode (Doubly-linked Node) ]";
 template <class T>
 const string Stack<T>::TOP_LABEL = "[[ Top of Stack ]]";
-
 template <class T>
-const string Stack<T>::END_LABEL = "[[ End of Stack ]]";
+const string Stack<T>::END_LABEL = "[[ Bottom of Stack ]]";
 
 /* Typedef forward declaration(s). */
-typedef StackNode<int> IntStackNode;
-typedef StackNode<float> FloatStackNode;
-typedef StackNode<double> DoubleStackNode;
-typedef StackNode<char> CharStackNode;
-typedef StackNode<string> StringStackNode;
+typedef LNode<int> IntLNode;
+typedef LNode<float> FloatLNode;
+typedef LNode<double> DoubleLNode;
+typedef LNode<char> CharLNode;
+typedef LNode<string> StringLNode;
+
+typedef DLNode<int> IntDLNode;
+typedef DLNode<float> FloatDLNode;
+typedef DLNode<double> DoubleDLNode;
+typedef DLNode<char> CharDLNode;
+typedef DLNode<string> StringDLNode;
 
 typedef Stack<int> IntStack;
 typedef Stack<float> FloatStack;
