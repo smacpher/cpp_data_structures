@@ -33,6 +33,12 @@ class Stack {
         bool is_empty() const;
         string to_string() const;
         bool garbage_collect();
+
+    // Overloaded non-member friend operator(s).
+    friend ostream& operator<<(ostream &os, const Stack<T> &stack) {
+        os << stack.to_string();
+        return os;
+    }
 };
 
 /* Stack definition. */
@@ -105,7 +111,7 @@ string Stack<T>::to_string() const {
         }
     }
 
-    os << Stack<T>::END_LABEL << endl;
+    os << Stack<T>::END_LABEL;
     return os.str();
 }
 

@@ -62,17 +62,17 @@ void testStack() {
     }
 
     cout << "stack_0" << endl;
-    cout << stack_0.to_string() << endl;
+    cout << stack_0 << endl;
 
     cout << "stack_1" << endl;
-    cout << stack_1.to_string() << endl;
+    cout << stack_1 << endl;
 
     cout << "Deallocating stack_0 nodes with garbage_collect()..." << endl;
     cout << boolalpha << "Garbage collecting stack_0 success? "
         << stack_0.garbage_collect() << endl;
 
     cout << boolalpha << "stack_0 empty? " << stack_0.is_empty() << endl;
-    cout << stack_0.to_string() << endl;
+    cout << stack_0 << endl;
 
     cout << "Deallocating stack_1 nodes manually with pop() and delete..."
         << endl;
@@ -86,5 +86,5 @@ void testStack() {
     }
 
     cout << boolalpha << "stack_1 empty? " << stack_1.is_empty() << endl;
-    cout << stack_1.to_string() << endl;
+    cout << stack_1 << endl;
 }

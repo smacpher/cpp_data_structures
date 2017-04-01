@@ -38,11 +38,6 @@ class LNode {
         virtual string to_string() const;
 
     // Overloaded non-member friend operator(s).
-    friend ostream& operator<<(ostream &os, const LNode<T> *node) {
-        os << node->to_string();
-        return os;
-    }
-
     friend ostream& operator<<(ostream &os, const LNode<T> &node) {
         os << node.to_string();
         return os;

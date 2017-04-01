@@ -7,13 +7,15 @@ using namespace std;
 void testLinkedList();
 
 int main() {
-
+    testLinkedList();
     return 0;
 }
 
 void testLinkedList() {
-    list = LinkedList();
-    
+    IntLinkedList list;
 
+    list = IntLinkedList();
+
+    cout << list << endl;
 }
 
