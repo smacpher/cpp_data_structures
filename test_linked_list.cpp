@@ -23,16 +23,24 @@ void testLinkedList() {
     cout << TEST_LABEL << "Testing LinkedList class." << endl;
     list = new IntLinkedList();
 
+    cout << TEST_LABEL << "List before populating:" << endl
+        << *list << endl;
+
+    cout << TEST_LABEL << "Populating list..." << endl;
+
     for (int i = 0; i < NODES; i++) {
         node_p = new IntLNode(i);
-        cout << *node_p << endl;
         list->push_front(node_p);
     }
 
-    cout << list << endl;
-    // for (int i = 0; i < NODES; i++) {
-    //     node_p = list->back();
-    //     cout << *node_p << endl;
-    // }
+    cout << TEST_LABEL << "List after populating:" << endl
+        << *list << endl;
+
+    cout << TEST_LABEL << "Popping and displaying from front of list" << endl;
+    for (int i = 0; i < NODES; i++) {
+        node_p = list->front();
+        cout << *node_p << endl;
+        list->pop_front();
+    }
 }
 
