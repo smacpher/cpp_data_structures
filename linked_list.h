@@ -27,20 +27,26 @@ class LinkedList {
         virtual ~LinkedList();
 
         // Public instance methods.
-        bool push_front(LNode<T> *node);
+        bool push_front(LNode<T> *new_node_p);
         bool push_front(T data);
-        bool push_back(LNode<T> *node);
+        bool push_back(LNode<T> *new_node_p);
         bool push_back(T data);
 
         void pop_front();
         void pop_back();
-        void pop_back(LNode<T> *node); // Recursive helper. 
 
-        LNode<T>* front();
-        LNode<T>* back();
-        LNode<T>* back(LNode<T> *node_p); // Recursive helper.
+        LNode<T>* front() const;
+        LNode<T>* back() const;
+
+        int size() const;
 
         string to_string() const;
+
+        // Recurisve helpers.
+        bool push_back(LNode<T> *new_node_p, LNode<T> *node_p); // Recursive helper.
+        void pop_back(LNode<T> *node); // Recursive helper. 
+        LNode<T>* back(LNode<T> *node_p) const; // Recursive helper.
+        int size(LNode<T> *node_p, int size = 0) const;
 
     // Overloaded non-member friend operator(s).
     friend ostream& operator<<(ostream &os, const LinkedList<T> &list) {
@@ -128,51 +134,39 @@ bool LinkedList<T>::push_front(T data) {
 
 template <class T>
 bool LinkedList<T>::push_back(LNode<T> *new_node_p) {
-    LNode<T> *prev_node_p;
+    return this->push_back(new_node_p, this->head);
+}
+
+template <class T>
+bool LinkedList<T>::push_back(LNode<T> *new_node_p, LNode<T> *node_p) {
 
     // Protect against NULL passed in nodes.
-    if (new_node_p == NULL)
+    if (new_node_p == NULL) {
         return false;
-
-
     // Empty list; new_node_p will be the first element.
-    if (this->head == NULL) {
+    } else if (this->head == NULL) { 
         this->head = new_node_p;
-    } else {
-        // Increment pointer to the last index of the list.
-        new_node_p = this->head;
-        while ((prev_node_p = prev_node_p->next) != NULL);
-
-        prev_node_p->next = new_node_p;
         new_node_p->next = NULL;
+        return true;
+    // Found last node in the list.
+    } else if (node_p->next == NULL) {
+        node_p->next = new_node_p;
+        new_node_p->next = NULL;
+        return true;
+    // Recursive case.
+    } else {
+        return this->push_back(new_node_p, node_p->next);
     }
-
-    return true;
 }
 
 template <class T>
 bool LinkedList<T>::push_back(T data) {
-    LNode<T> *prev_node_p, *new_node_p;
+    LNode<T> *new_node_p;
 
     // Instantiate new node.
     new_node_p = new LNode<T>(data);
 
-    if (prev_node_p == NULL)
-        return false;
-
-    // Empty list; new_node_p will be the first element.
-    if (this->head == NULL) {
-        this->head = new_node_p;
-    } else {
-        // Increment pointer to the last index of the list.
-        new_node_p = this->head;
-        while ((prev_node_p = prev_node_p->next) != NULL);
-
-        prev_node_p->next = new_node_p;
-        new_node_p->next = NULL;
-    }
-
-    return true;
+    return this->push_back(new_node_p, this->head);
 }
 
 template <class T>
@@ -205,20 +199,35 @@ void LinkedList<T>::pop_back(LNode<T> *node_p) {
 }
 
 template <class T>
-LNode<T>* LinkedList<T>::front() {
+LNode<T>* LinkedList<T>::front() const {
     return this->head;
 }
 
 template <class T>
-LNode<T>* LinkedList<T>::back() {
+LNode<T>* LinkedList<T>::back() const {
     return this->back(this->head);
 }
 
 template <class T>
-LNode<T>* LinkedList<T>::back(LNode<T> *node_p) {
+LNode<T>* LinkedList<T>::back(LNode<T> *node_p) const {
     if (node_p->next == NULL)
         return node_p;
     return back(node_p->next);
+}
+
+template <class T>
+int LinkedList<T>::size() const {
+    return this->size(this->head, 0);
+}
+
+template <class T>
+int LinkedList<T>::size(LNode<T> *node_p, int size) const {
+    if (this->head == NULL) {
+        return 0;
+    } else if (node_p->next == NULL) {
+        return size;
+    }
+    return this->size(node_p->next, ++size);
 }
 
 template <class T>

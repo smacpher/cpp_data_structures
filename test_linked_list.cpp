@@ -37,6 +37,10 @@ void testLinkedList() {
 
     cout << TEST_LABEL << "Output of front()." << endl;
     cout << list->front()->to_string() << endl;
+    cout << TEST_LABEL << "Output of back()." << endl;
+    cout << list->back()->to_string() << endl;
+    cout << TEST_LABEL << "Output of size()." << endl;
+    cout << list->size() << endl;
 
     cout << TEST_LABEL << "Displaying list with to_string()." << endl;
     cout << *list << endl; // Overloaded operator '<<' calls to_string().
@@ -47,12 +51,25 @@ void testLinkedList() {
     cout << TEST_LABEL << "List after deleting." << endl;
     cout << *list << endl;
 
-    // cout << TEST_LABEL << "Populating list with push_back()." << endl;
-    // for (int i = 0; i < NODES; i++) {
-    //     node_p = new IntLNode(i);
+    list = new IntLinkedList();
+    cout << TEST_LABEL << "List before populating." << endl;
+    cout << *list << endl;
+    cout << TEST_LABEL << "Populating list with push_back()." << endl;
+    for (int i = 0; i < NODES; i++) {
+        node_p = new IntLNode(i);
+        list->push_back(node_p);
+    }
 
-    // }
+    cout << TEST_LABEL << "List after populating." << endl;
+    cout << *list << endl;
 
+
+    cout << TEST_LABEL << "Output of front()." << endl;
+    cout << list->front()->to_string() << endl;
+    cout << TEST_LABEL << "Output of back()." << endl;
+    cout << list->back()->to_string() << endl;
+    cout << TEST_LABEL << "Output of size()." << endl;
+    cout << list->size() << endl;
 
 }
 
