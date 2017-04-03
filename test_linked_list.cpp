@@ -25,6 +25,8 @@ void testLinkedList() {
 
     cout << TEST_LABEL << "List before populating." << endl;
     cout << *list << endl;
+    cout << TEST_LABEL << "Prettify'd list." << endl;
+    cout << list->prettify() << endl;
 
     cout << TEST_LABEL << "Populating list with push_front()." << endl;
     for (int i = 0; i < NODES; i++) {
@@ -34,6 +36,8 @@ void testLinkedList() {
 
     cout << TEST_LABEL << "List after populating." << endl;
     cout << *list << endl;
+    cout << TEST_LABEL << "Prettify'd list." << endl;
+    cout << list->prettify() << endl;
 
     cout << TEST_LABEL << "Output of front()." << endl;
     cout << list->front()->to_string() << endl;
@@ -44,6 +48,8 @@ void testLinkedList() {
 
     cout << TEST_LABEL << "Displaying list with to_string()." << endl;
     cout << *list << endl; // Overloaded operator '<<' calls to_string().
+    cout << TEST_LABEL << "Prettify'd list." << endl;
+    cout << list->prettify() << endl;
 
     cout << TEST_LABEL << "Deleting list." << endl;
     delete list;
@@ -54,6 +60,9 @@ void testLinkedList() {
     list = new IntLinkedList();
     cout << TEST_LABEL << "List before populating." << endl;
     cout << *list << endl;
+    cout << TEST_LABEL << "Prettify'd list." << endl;
+    cout << list->prettify() << endl;
+
     cout << TEST_LABEL << "Populating list with push_back()." << endl;
     for (int i = 0; i < NODES; i++) {
         node_p = new IntLNode(i);
@@ -62,7 +71,8 @@ void testLinkedList() {
 
     cout << TEST_LABEL << "List after populating." << endl;
     cout << *list << endl;
-
+    cout << TEST_LABEL << "Prettify'd list." << endl;
+    cout << list->prettify() << endl;
 
     cout << TEST_LABEL << "Output of front()." << endl;
     cout << list->front()->to_string() << endl;
