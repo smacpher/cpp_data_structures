@@ -53,7 +53,7 @@ class LinkedList {
         void pop_back(LNode<T> *node); 
         int size(LNode<T> *node_p, int size = 0) const;
         LNode<T>* at(int index, int cur, LNode<T> *node_p) const;
-    
+
     // Overloaded non-member friend operator(s).
     friend ostream& operator<<(ostream &os, const LinkedList<T> &list) {
         os << list.to_string();
@@ -259,7 +259,7 @@ LNode<T>* LinkedList<T>::back() const {
 
 template <class T>
 LNode<T>* LinkedList<T>::at(int index) const {
-    return this->index(index, 0, this->head);
+    return this->at(index, 0, this->head);
 }
 
 template <class T>

@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "linked_list.h"
+#include "utils.h"
 
 using namespace std;
 
@@ -11,15 +12,23 @@ const string TEST_LABEL = "[ TEST ] ";
 // Test method prototypes.
 void testLinkedList();
 
+// Main client.
 int main() {
     testLinkedList();
     return 0;
 }
 
+// Test method definitions.
 void testLinkedList() {
+    int rand_i;
     IntLNode *node_p;
     IntLinkedList *list;
+    Utils utils;
 
+    // Instantiate utils class.
+    utils = Utils();
+
+    // LinkedList tests.
     cout << TEST_LABEL << "Testing LinkedList class." << endl;
     list = new IntLinkedList();
 
@@ -63,13 +72,14 @@ void testLinkedList() {
     cout << TEST_LABEL << "Prettify'd list." << endl;
     cout << list->prettify() << endl;
 
-    cout << TEST_LABEL << "Populating list with push_back()." << endl;
+    cout << TEST_LABEL << "Populating list of squares with push_back()."
+        << endl;
     for (int i = 0; i < NODES; i++) {
-        node_p = new IntLNode(i);
+        node_p = new IntLNode(i * i);
         list->push_back(node_p);
     }
 
-    cout << TEST_LABEL << "List after populating." << endl;
+    cout << TEST_LABEL << "List after populating with squares." << endl;
     cout << *list << endl;
     cout << TEST_LABEL << "Prettify'd list." << endl;
     cout << list->prettify() << endl;
@@ -81,5 +91,11 @@ void testLinkedList() {
     cout << TEST_LABEL << "Output of size()." << endl;
     cout << list->size() << endl;
 
+    cout << TEST_LABEL << "Testing at() with random index." << endl;
+    for (int i = 0; i < NODES; i++) {
+        rand_i = utils.rand_int_between(0, NODES - 1);
+        cout << "Node at index " << rand_i << ": "
+            << list->at(rand_i)->to_string() << endl;
+    }
 }
 
