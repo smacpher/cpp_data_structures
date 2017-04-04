@@ -36,8 +36,8 @@ class LinkedList {
         bool push_back(LNode<T> *new_node_p);
         bool push_back(T data);
 
-        void pop_front();
-        void pop_back();
+        bool pop_front();
+        bool pop_back();
 
         LNode<T>* front() const;
         LNode<T>* back() const;
@@ -45,13 +45,13 @@ class LinkedList {
 
         int size() const;
 
-        string to_string() const;
-        string prettify() const;
+        virtual string to_string() const;
+        virtual string prettify() const;
 
-        // Recurisve helpers.
+        // Recursive helpers.
         bool push_back(LNode<T> *new_node_p, LNode<T> *node_p);
-        void pop_back(LNode<T> *node); 
-        int size(LNode<T> *node_p, int size = 0) const;
+        bool pop_back(LNode<T> *node);
+        int size(LNode<T> *node_p, int count = 0) const;
         LNode<T>* at(int index, int cur, LNode<T> *node_p) const;
 
     // Overloaded non-member friend operator(s).
@@ -73,10 +73,11 @@ class DoublyLinkedList {
         // Static symbolic constants.
         static const string FRONT_LABEL;
         static const string BACK_LABEL;
+        static const string PRETTIFY_DELIMETER;
 
     protected:
-        LNode<T> *head;
-        LNode<T> *tail;
+        DLNode<T> *head;
+        DLNode<T> *tail;
 
     public:
         // Constructor(s) / destructor.
@@ -86,22 +87,41 @@ class DoublyLinkedList {
         virtual ~DoublyLinkedList();
 
         // Public instance methods.
-        bool push_front(LNode<T> *new_node_p);
+        void deallocate_nodes();
+
+        bool push_front(DLNode<T> *new_node_p);
         bool push_front(T data);
-        bool push_back(LNode<T> *new_node_p);
+        bool push_back(DLNode<T> *new_node_p);
         bool push_back(T data);
 
-        void pop_front();
-        void pop_back();
+        bool pop_front();
+        bool pop_back();
 
-        LNode<T>* front() const;
-        LNode<T>* back() const;
+        DLNode<T>* front() const;
+        DLNode<T>* back() const;
+        DLNode<T>* at(int index) const;
 
         int size() const;
 
-        string to_string() const;
+        virtual string to_string() const;
+        virtual string prettify() const;
+
+        // Recursive helpers.
+        int size(DLNode<T> *node_p, int count = 0) const;
+        DLNode<T>* at(int index, int cur, DLNode<T> *node_p) const;
+
+    // Overloaded non-member friend operator(s).
+    friend ostream& operator<<(ostream &os, const DoublyLinkedList<T> &list) {
+        os << list.to_string();
+        return os;
+    }
+
+    // Exception classes.
+    class EmptyListException {};
+    class OutOfBoundsException {};
 };
 
+/* Class definitions. */
 /* LinkedList class definition. */
 template <class T>
 LinkedList<T>::LinkedList() {
@@ -111,6 +131,7 @@ LinkedList<T>::LinkedList() {
 
 template <class T>
 LinkedList<T>::LinkedList(const LinkedList &l_list) {
+    // NEED TO TEST */
     LNode<T> *other_node_p, *this_node_p;
 
     if (l_list->head == NULL)
@@ -210,38 +231,38 @@ bool LinkedList<T>::push_back(LNode<T> *new_node_p, LNode<T> *node_p) {
 template <class T>
 bool LinkedList<T>::push_back(T data) {
     LNode<T> *new_node_p;
-
-    // Instantiate new node.
     new_node_p = new LNode<T>(data);
     return this->push_back(new_node_p, this->head);
 }
 
 template <class T>
-void LinkedList<T>::pop_front() {
-    if (this->head == NULL) { // Empty list.
-        return;
+bool LinkedList<T>::pop_front() {
+    // Empty list.
+    if (this->head == NULL) {
+        return false;
     } else {
         LNode<T> *temp_p;
         temp_p = this->head;
         this->head = this->head->next;
         delete temp_p;
+        return true;
     }
 }
 
 template <class T>
-void LinkedList<T>::pop_back() {
+bool LinkedList<T>::pop_back() {
     return this->pop_back(this->head);
 }
 
 template <class T>
-void LinkedList<T>::pop_back(LNode<T> *node_p) {
+bool LinkedList<T>::pop_back(LNode<T> *node_p) {
     if (this->head == NULL) {
-        return;
+        return false;
     } else if (node_p->next == this->tail) {
         delete node_p->next;
         node_p->next = NULL;
         this->tail = node_p;
-        return;
+        return true;
     }
 
     pop_back(node_p->next);
@@ -281,13 +302,13 @@ int LinkedList<T>::size() const {
 }
 
 template <class T>
-int LinkedList<T>::size(LNode<T> *node_p, int size) const {
+int LinkedList<T>::size(LNode<T> *node_p, int count) const {
     if (this->head == NULL) {
         return 0;
     } else if (node_p == this->tail) {
-        return size;
+        return count;
     }
-    return this->size(node_p->next, ++size);
+    return this->size(node_p->next, ++count);
 }
 
 template <class T>
@@ -331,6 +352,207 @@ string LinkedList<T>::prettify() const {
 }
 
 /* DoublyLinkedList class definition. */
+template <class T>
+DoublyLinkedList<T>::DoublyLinkedList() {
+    this->head = NULL;
+    this->tail = NULL;
+}
+
+template <class T>
+DoublyLinkedList<T>::DoublyLinkedList(const DoublyLinkedList<T> &list) {
+// Copy constructor.
+}
+
+template <class T>
+DoublyLinkedList<T>::~DoublyLinkedList() {
+    if (this->head == NULL)
+        return;
+    this->deallocate_nodes();
+    this->head = NULL;
+    this->tail = NULL;
+}
+
+template <class T>
+void DoublyLinkedList<T>::deallocate_nodes() {
+    DLNode<T> *node_p;
+
+    node_p = this->head;
+    while ((node_p = node_p->next) != NULL) {
+        delete node_p;
+    }
+}
+
+template <class T>
+bool DoublyLinkedList<T>::push_front(DLNode<T> *new_node_p) {
+    // Protect against NULL passed-in nodes.
+    if (new_node_p == NULL) {
+        return false;
+    } else if (this->head == NULL) { // First node in the list.
+        new_node_p->prev = NULL;
+        new_node_p->next = NULL;
+        this->head = new_node_p;
+        this->tail = new_node_p;
+        return true;
+    }
+
+    new_node_p->prev = NULL;
+    new_node_p->next = this->head;
+    this->head = new_node_p;
+    return true;
+}
+
+template <class T>
+bool DoublyLinkedList<T>::push_front(T data) {
+    DLNode<T> *new_node_p;
+    new_node_p = new DLNode<T>(data);
+    return this->push_front(new_node_p);
+}
+
+template <class T>
+bool DoublyLinkedList<T>::push_back(DLNode<T> *new_node_p) {
+    // Protect against NULL passed in nodes.
+    if (new_node_p == NULL) {
+        return false;
+    } else if (this->head == NULL) { // First node in the list.
+        new_node_p->prev = NULL;
+        new_node_p->next = NULL;
+        this->head = new_node_p;
+        this->tail = new_node_p;
+        return true;
+    }
+
+    this->tail->next = new_node_p;
+    this->tail = new_node_p;
+    return true;
+}
+
+template <class T>
+bool DoublyLinkedList<T>::push_back(T data) {
+    DLNode<T> *new_node_p;
+    new_node_p = new DLNode<T>(data);
+    return this->push_back(new_node_p);
+}
+
+template <class T>
+bool DoublyLinkedList<T>::pop_front() {
+    DLNode<T> *temp_p;
+
+    // Empty list.
+    if (this->head == NULL) {
+        return false;
+    } else if (this->head == this->tail) { // One element in list.
+        delete this->head;
+        return true;
+    }
+
+    temp_p = this->head;
+    this->head = this->head->next;
+    this->head->prev = NULL;
+    delete temp_p;
+
+    return true;
+}
+
+template <class T>
+bool DoublyLinkedList<T>::pop_back() {
+    DLNode<T> *temp_p;
+
+    // Empty list.
+    if (this->head == NULL) {
+        return false;
+    } else if (this->head == this->tail) {
+        delete this->head;
+        return true;
+    }
+
+    temp_p = this->tail;
+    this->tail = this->tail->prev;
+    this->tail->next = NULL;
+    delete temp_p;
+
+    return true;
+}
+
+template <class T>
+DLNode<T>* DoublyLinkedList<T>::front() const {
+    return this->head;
+}
+
+template <class T>
+DLNode<T>* DoublyLinkedList<T>::back() const {
+    return this->tail;
+}
+
+template <class T>
+DLNode<T>* DoublyLinkedList<T>::at(int index) const {
+    return this->at(index, 0, this->head);
+}
+
+template <class T>
+DLNode<T>* DoublyLinkedList<T>::at(int index, int cur, DLNode<T> *node_p) const 
+{
+    if (this->head == NULL) {
+        throw DoublyLinkedList<T>::EmptyListException();
+    } else if (cur == index) {
+        return node_p;
+    } else if (node_p == this->tail) {
+        throw DoublyLinkedList<T>::OutOfBoundsException();
+    } else {
+        return this->at(index, ++cur, node_p->next);
+    }
+}
+
+template <class T>
+int DoublyLinkedList<T>::size() const {
+    return this->size(this->head, 0);
+}
+
+template <class T>
+int DoublyLinkedList<T>::size(DLNode<T> *node_p, int count) const {
+    if (this->head == NULL) {
+        return 0;
+    } else if (node_p == this->tail) {
+        return count;
+    }
+    return this->size(node_p->next, ++count);
+}
+
+template <class T>
+string DoublyLinkedList<T>::to_string() const {
+    ostringstream os;
+    DLNode<T>* node_p;
+
+    os << DoublyLinkedList<T>::FRONT_LABEL << endl;
+
+    if (this->head != NULL) {
+        for (node_p = this->head; node_p != NULL; node_p = node_p->next) {
+            os << node_p->to_string() << endl;
+        }
+    }
+
+    os << DoublyLinkedList<T>::BACK_LABEL;
+    return os.str();
+}
+
+template <class T>
+string DoublyLinkedList<T>::prettify() const {
+    ostringstream os;
+    DLNode<T>* node_p;
+
+    os << DoublyLinkedList<T>::FRONT_LABEL
+        << DoublyLinkedList<T>::PRETTIFY_DELIMETER;
+
+    if (this->head != NULL) {
+        for (node_p = this->head; node_p != NULL; node_p = node_p->next) {
+            os << node_p->to_string()
+                << DoublyLinkedList<T>::PRETTIFY_DELIMETER;
+        }
+    }
+
+    os << DoublyLinkedList<T>::BACK_LABEL << endl;
+
+    return os.str();
+}
 
 /* Out-of-line definitions. */
 template <class T>
@@ -343,6 +565,8 @@ template <class T>
 const string DoublyLinkedList<T>::FRONT_LABEL = " [ Front of DoublyLinkedList ] ";
 template <class T>
 const string DoublyLinkedList<T>::BACK_LABEL = " [ Back of DoublyLinkedList ] ";
+template <class T>
+const string DoublyLinkedList<T>::PRETTIFY_DELIMETER = " <-> ";
 
 /* Forward declarations. */
 typedef LinkedList<int> IntLinkedList;

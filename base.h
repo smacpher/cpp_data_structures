@@ -22,7 +22,7 @@ class LNode {
         // Static symbolic constants.
         static const string LABEL;
 
-    protected:
+    private:
         LNode<T> *next;
         T data;
 
@@ -54,8 +54,10 @@ class DLNode : public LNode<T> {
         // Static symbolic constants.
         static const string LABEL;
 
-    protected:
-        LNode<T> *prev;
+    private:
+        DLNode<T> *next;
+        DLNode<T> *prev;
+        T data;
 
     public:
         // Constructor(s) / destructor.
