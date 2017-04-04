@@ -180,4 +180,6 @@ void testDoublyLinkedList() {
             << list->at(rand_i)->to_string() << endl;
     }
 
+    delete list;
+
 }

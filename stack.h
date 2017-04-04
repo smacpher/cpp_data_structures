@@ -41,6 +41,8 @@ class Stack {
     }
 };
 
+#endif /* STACK_H */
+
 /* Stack definition. */
 // Constructor(s) / destructor.
 template <class T>
@@ -142,5 +144,3 @@ typedef Stack<float> FloatStack;
 typedef Stack<double> DoubleStack;
 typedef Stack<char> CharStack;
 typedef Stack<string> StringStack;
-
-#endif /* STACK_H */

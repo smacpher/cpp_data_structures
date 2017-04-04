@@ -6,6 +6,10 @@
 
 #include "base.h"
 
+/* Forward class declaration(s). */
+template <class T> class Queue;
+template <class T> class Dequeue;
+
 /* LinkedList class prototype. */
 template <class T>
 class LinkedList {
@@ -69,6 +73,9 @@ class LinkedList {
 template <class T>
 class DoublyLinkedList {
 
+    template <class W> friend class Queue;
+    template <class W> friend class Dequeue;
+
     public:
         // Static symbolic constants.
         static const string FRONT_LABEL;
@@ -120,6 +127,8 @@ class DoublyLinkedList {
     class EmptyListException {};
     class OutOfBoundsException {};
 };
+
+#endif /* LINKED_LIST_H */
 
 /* Class definitions. */
 /* LinkedList class definition. */
@@ -580,5 +589,3 @@ typedef DoublyLinkedList<float> FloatDoublyLinkedList;
 typedef DoublyLinkedList<double> DoubleDoublyLinkedList;
 typedef DoublyLinkedList<char> CharDoublyLinkedList;
 typedef DoublyLinkedList<string> StringDoublyLinkedList;
-
-#endif /* LINKED_LIST_H */

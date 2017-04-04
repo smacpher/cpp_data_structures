@@ -10,6 +10,8 @@ using namespace std;
 template <class T> class Stack;
 template <class T> class LinkedList;
 template <class T> class DoublyLinkedList;
+template <class T> class Queue;
+template <class T> class Dequeue;
 
 /* LNode -- 'Linked Node' -- prototype. */
 template <class T>
@@ -69,6 +71,30 @@ class DLNode : public LNode<T> {
 
         // Public instance methods.
         virtual string to_string() const;
+};
+
+/* Wrapper classes to add clarity to users. */
+/* QNode -- 'Queue Node' -- prototype. */
+template <class T>
+class QNode : public LNode<T> {
+
+    template <class W> friend class Queue;
+
+    public:
+        // Static symbolic constants.
+        static const string LABEL;
+
+};
+
+/* DQNode -- 'Dequeue Node' -- prototype. */
+template <class T>
+class DQNode : public DLNode<T> {
+
+    template <class W> friend class Dequeue;
+
+    public:
+        // Static symbolic constants.
+        static const string LABEL;
 };
 
 #endif /* BASE_H */
