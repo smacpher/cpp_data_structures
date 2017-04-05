@@ -21,7 +21,7 @@ int main() {
     return 0;
 }
 
-// Test method definitions.
+// Test method definition(s).
 void testLNode() {
     cout << TEST_LABEL << "Testing LNode (Linked Node) class." << endl;
 

@@ -20,7 +20,7 @@ int main() {
     return 0;
 }
 
-// Test method definitions.
+// Test method definition(s).
 void testLinkedList() {
     int rand_i;
     IntLNode *node_p;

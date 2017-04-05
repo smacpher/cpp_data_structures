@@ -35,6 +35,13 @@ class Queue {
 
         string to_string() const;
         string prettify() const;
+
+    // Overloaded non-member friend operator(s).
+    friend ostream& operator<<(ostream &os, const Queue<T> &queue) {
+        os << queue.to_string();
+        return os;
+    }
+
 };
 
 /* Dequeue prototype. */
@@ -113,5 +120,16 @@ string Queue<T>::prettify() const {
 /* Dequeue definition. */
 
 /* Out-of-line definitions. */
+template <class T>
+const string Queue<T>::FRONT_LABEL = " [ Front of Queue ] ";
+template <class T>
+const string Queue<T>::BACK_LABEL = " [ Back of Queue ] ";
+template <class T>
+const string Queue<T>::PRETTIFY_DELIMETER = " -- ";
 
 /* Typedef forward declarations. */
+typedef Queue<int> IntQueue;
+typedef Queue<float> FloatQueue;
+typedef Queue<double> DoubleQueue;
+typedef Queue<char> CharQueue;
+typedef Queue<string> StringQueue;
