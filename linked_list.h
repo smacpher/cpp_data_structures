@@ -46,7 +46,8 @@ class LinkedList {
         LNode<T>* front() const;
         LNode<T>* back() const;
         LNode<T>* at(int index) const;
-
+        
+        // TODO: Add caching into size functionality.
         int size() const;
 
         virtual string to_string() const;

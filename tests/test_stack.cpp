@@ -1,26 +1,35 @@
 #include <string>
-
-#include "stack.h"
+#include "catch.hpp"
+#include "../stack.h"
 
 using namespace std;
 
 // Global symbolic constants.
+const int TEST_VALUE = 21;
+const string EXPECTED_LNODE_TOSTRING = "[ LNode (Linked Node) ] [ 21 ]";
 const int NODES = 10;
 const string TEST_LABEL = "[ TEST ] ";
 
-// Test method declarations.
-void testLNode();
-void testDLNode();
-void testStack();
+/* CATCH unit tests. */
+TEST_CASE("Testing LNode (Linked Node class)", "[LNode]") {
 
-// Main client.
-int main() {
-    testLNode();
-    testDLNode();
-    testStack();
-    return 0;
+    IntLNode* l_node;
+
+    l_node = new IntLNode(TEST_VALUE);
+
+    SECTION("Print LNode to cout") {
+        cout << *l_node << endl;
+    }
+
+    SECTION("LNode::toString()") {
+        REQUIRE(l_node->to_string() == EXPECTED_LNODE_TOSTRING);
+    }
+
+    /* Clean up. */
+    delete l_node;
 }
 
+/*
 // Test method definition(s).
 void testLNode() {
     cout << TEST_LABEL << "Testing LNode (Linked Node) class." << endl;
@@ -87,3 +96,4 @@ void testStack() {
     cout << boolalpha << "stack_1 empty? " << stack_1.is_empty() << endl;
     cout << stack_1 << endl;
 }
+*/

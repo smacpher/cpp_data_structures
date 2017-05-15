@@ -125,7 +125,7 @@ LNode<T>::~LNode() {
 template <class T>
 string LNode<T>::to_string() const {
     ostringstream os;
-    os << LNode<T>::LABEL << " [ " << this->data << " ] ";
+    os << LNode<T>::LABEL << " [ " << this->data << " ]";
     return os.str();
 }
 
@@ -157,7 +157,7 @@ DLNode<T>::~DLNode() {
 template <class T>
 string DLNode<T>::to_string() const {
     ostringstream os;
-    os << DLNode<T>::LABEL << " [ " << this->data << " ] ";
+    os << DLNode<T>::LABEL << " [ " << this->data << " ]";
     return os.str();
 }
 
