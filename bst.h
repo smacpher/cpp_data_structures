@@ -83,18 +83,32 @@ class BinarySearchTree {
         bool setRoot(BinaryNode<T> *newRoot);
 
         /* Public instance methods. */
-        bool isEmpty() const;
+        bool empty() const;
         void insert(T data);
 
+        /* Traverse functions. */
         template <typename Processor>
-        void r_inorder(Processor func); // Recursive traverse wrapper.
-
-        // 'r_traverse' recursive helper.
-        template <typename Processor>
-        void r_inorder(BinaryNode<T> *cur_root, Processor func);
+        void inorder(Processor func);
 
         template <typename Processor>
-        void i_inorder(Processor func); // Iterative traverse.
+        void preorder(Processor func);
+
+        template <typename Processor>
+        void postorder(Processor func);
+
+        // Iterative inorder.
+        template <typename Processor>
+        void i_inorder(Processor func);
+
+        /* Traverse functions recursive helpers. */
+        template <typename Processor>
+        void inorder(BinaryNode<T> *cur_root, Processor func);
+
+        template <typename Processor>
+        void preorder(BinaryNode<T> *cur_root, Processor func);
+
+        template <typename Processor>
+        void postorder(BinaryNode<T> *cur_root, Processor func);
 
 };
 
@@ -118,7 +132,7 @@ bool BinarySearchTree<T>::setRoot(BinaryNode<T> *newRoot) {
 
 /* Public instance methods. */
 template <typename T>
-bool BinarySearchTree<T>::isEmpty() const {
+bool BinarySearchTree<T>::mpty() const {
     return root == nullptr;
 }
 
@@ -133,7 +147,7 @@ void BinarySearchTree<T>::insert(T data) {
     new_node->right = nullptr;
     parent = nullptr;
 
-    if (isEmpty())
+    if (empty())
         root = new_node;
     else {
         cur = root; 
@@ -155,23 +169,59 @@ void BinarySearchTree<T>::insert(T data) {
 
 }
 
+/* Traverse functions. */
 template <typename T>
 template <typename Processor>
-void BinarySearchTree<T>::r_inorder(Processor func) {
-    r_inorder(root, func);
+void BinarySearchTree<T>::preorder(Processor func) {
+    preorder(root, func);
 }
 
 template <typename T>
 template <typename Processor>
-void BinarySearchTree<T>::r_inorder(BinaryNode<T> *cur_root, Processor func) { 
+void BinarySearchTree<T>::inorder(Processor func) {
+    inorder(root, func);
+}
+
+template <typename T>
+template <typename Processor>
+void BinarySearchTree<T>::postorder(Processor func) {
+    postorder(root, func);
+}
+
+/* Traverse functions recursive helpers. */
+template <typename T>
+template <typename Processor>
+void BinarySearchTree<T>preorder(BinaryNode<T> *cur_root, Processor func) {
+     if (cur_root == nullptr)
+         return;
+
+     func(cur_root->element);
+     preorder(cur_root->left, func);
+     preorder(cur_root->right, func);
+}
+
+template <typename T>
+template <typename Processor>
+void BinarySearchTree<T>::inorder(BinaryNode<T> *cur_root, Processor func) { 
     if (cur_root == nullptr)
         return;
 
-    r_inorder(cur_root->left, func);
+    inorder(cur_root->left, func);
     func(cur_root->element);
-    r_inorder(cur_root->right, func);
+    inorder(cur_root->right, func);
 }
  
+template <typename T>
+template <Processor func>
+void BinarySearchTree<T>::postorder(BinaryNode<T> *cur_root, Processor func) {
+    if (cur_root == nullptr)
+        return;
+
+    postorder(cur_root->left, func);
+    postorder(cur_root->right, func);
+    func(cur_root->element);
+}
+
 template <typename T>
 template <typename Processor>
 void BinarySearchTree<T>::i_inorder(Processor func) {
