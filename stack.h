@@ -30,7 +30,7 @@ class Stack {
         bool push(LNode<T> *node);
         bool push(T data);
         LNode<T>* pop();
-        bool is_empty() const;
+        bool empty() const;
         string to_string() const;
         bool garbage_collect();
 
@@ -93,7 +93,7 @@ LNode<T>* Stack<T>::pop() {
 }
 
 template <class T>
-bool Stack<T>::is_empty() const {
+bool Stack<T>::empty() const {
     return this->top == NULL;
 }
 
