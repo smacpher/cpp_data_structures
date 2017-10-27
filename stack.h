@@ -30,6 +30,8 @@ class Stack {
         bool push(LNode<T> *node);
         bool push(T data);
         LNode<T>* pop();
+        
+        int size() const;
         bool empty() const;
         string to_string() const;
         bool garbage_collect();
@@ -95,6 +97,26 @@ LNode<T>* Stack<T>::pop() {
 template <class T>
 bool Stack<T>::empty() const {
     return this->top == NULL;
+}
+
+template <class T>
+int Stack<T>::size() const {
+    int count = 0;
+    LNode<T> *node_p;
+
+
+    // Empty stack.
+    if (this->top == nullptr) {
+        return 0;
+    }
+
+    node_p = this->top;
+
+    while ((node_p = node_p->next)) {
+       count++; 
+    }
+
+    return count;
 }
 
 template <class T>

@@ -4,7 +4,6 @@
 #include <sstream>
 #include <string>
 
-#include "base.h"
 #include "linked_list.h"
 
 using namespace std;
@@ -29,9 +28,12 @@ class Queue {
         ~Queue();
 
         // Public instance method(s).
-        bool enqueue(LNode<T> *new_node_p);
+        bool enqueue(DLNode<T> *new_node_p);
         bool enqueue(T data);
-        LNode<T> *node dequeue();
+        DLNode<T>* dequeue();
+
+        int size() const;
+        int empty() const;
 
         string to_string() const;
         string prettify() const;
@@ -55,7 +57,7 @@ class Queue {
 /* Queue definition. */
 template <class T>
 Queue<T>::Queue() {
-    this->queue = new DoublyLinkedList();
+    this->queue = new DoublyLinkedList<T>();
 }
 
 template <class T>
@@ -69,20 +71,35 @@ Queue<T>::~Queue() {
 }
 
 template <class T>
-bool Queue<T>::enqueue(LNode<T> *new_node_p) {
-    this->queue->push_front(new_node_p);
+bool Queue<T>::enqueue(DLNode<T> *new_node_p) {
+    return this->queue->push_front(new_node_p);
 }
 
 template <class T>
 bool Queue<T>::enqueue(T data) {
     LNode<T> *new_node_p;
     new_node_p = new LNode<T>(data);
-    this->queue->push_front(new_node_p);
+    return this->queue->push_front(new_node_p);
 }
 
 template <class T>
-bool Queue<T>::dequeue() {
-    this->queue->pop_back(node);
+DLNode<T>* Queue<T>::dequeue() {
+    DLNode<T> *node_p;
+
+    node_p = this->queue->back();
+    this->queue->pop_back();
+
+    return node_p;
+}
+
+template <class T>
+int Queue<T>::size() const {
+    return queue->size();
+}
+
+template <class T>
+int Queue<T>::empty() const {
+    return queue->size() > 0;
 }
 
 template <class T>

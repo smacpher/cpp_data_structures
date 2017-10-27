@@ -1,40 +1,41 @@
 #include <iostream>
-
-#include "queue.h"
+#include "catch.hpp"
+#include "../queue.h"
 
 using namespace std;
 
-// Global symbolic constants.
-const int NODES = 10;
-const string TEST_LABEL = " [ TEST ] "
+/* Global symbolic constants. */
+const int NUM_TEST_NODES = 10;
+const string TEST_LABEL = " [ TEST ] ";
 
-// Test method prototype(s).
-void testQueue();
+/* Catch unit test(s). */
 
-// Main client.
-int main() {
-    testQueue();
-    return 0;
-}
-
-// Test method definition(s).
-void testQueue() {
+TEST_CASE("Testing Queue", "[Queue]") {
+    /* Instantiate Queue. */
     IntDLNode *node_p;
     IntQueue *queue;
 
-    cout << TEST_LABEL << "Testing Queue class." << endl;
-    queue = new IntQueue();
-    cout << TEST_LABEL << "Queue before populating." << endl;
-    cout << *queue << endl;
+    queue = new IntQueue;
 
-    cout << TEST_LABEL << "Populating queue with enqueue()." << endl;
-    for (int i = 0; i < NODES; i++) {
-        node_p = new IntDLNode(i);
-        queue->enqueue(node_p);
+    SECTION("Queue::size") {
+        REQUIRE(queue->size() == 0);
     }
 
-    cout << TEST_LABEL << "Queue after populating." << endl;
-    cout << *queue << endl;
+    SECTION("Queue::empty") {
+        REQUIRE(queue->empty() == true);
+    }
+
+    SECTION("Queue::enqueue") {
+        for (int i = 0; i < NUM_TEST_NODES; i++) {
+            node_p = new IntDLNode(i);
+            queue->enqueue(node_p);
+        }
+        
+        REQUIRE(queue->size() == NUM_TEST_NODES);
+        REQUIRE(queue->empty() == false);
+    }
+    
+    /* Clean up. */
     delete queue;
 }
 
